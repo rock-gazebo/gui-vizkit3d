@@ -262,7 +262,14 @@ Vizkit3DWidget::Vizkit3DWidget( QWidget* parent,int width,int height,const QStri
         _timer.start(10);
 }
 
-Vizkit3DWidget::~Vizkit3DWidget() {}
+Vizkit3DWidget::~Vizkit3DWidget() 
+{
+    delete env_plugin;
+    for(auto& plugin : plugins)
+    {
+        delete plugin.first;
+    }
+}
 
 //qt ruby is crashing if we use none pointer here
 QStringList* Vizkit3DWidget::getVisualizationFramesRuby() const
