@@ -1,8 +1,12 @@
 #ifndef VIZKIT3D_WINDOW_CAPTURE_CALLBACK
 #define VIZKIT3D_WINDOW_CAPTURE_CALLBACK
 
+#include <osg/Version>
 #include <osg/Camera>
 #include <vizkit3d/Vizkit3DWidget.hpp>
+#if OSG_MIN_VERSION_REQUIRED(3, 4, 0)
+#include <osg/GLExtensions>
+#endif
 
 namespace vizkit3d
 {
@@ -29,6 +33,11 @@ namespace vizkit3d
      */
     class WindowCaptureCallback : public osg::Camera::DrawCallback
     {
+#if OSG_MIN_VERSION_REQUIRED(3, 4, 0)
+        typedef osg::GLExtensions GLExtensions;
+#else
+        typedef osg::GLBufferObject::Extensions GLExtensions;
+#endif
     public:
         typedef Vizkit3DWidget::GrabbingMode Mode;
 
@@ -64,8 +73,8 @@ namespace vizkit3d
 
             void read();
             void readPixels();
-            void singlePBO(osg::GLBufferObject::Extensions* ext);
-            void multiPBO(osg::GLBufferObject::Extensions* ext);
+            void singlePBO(GLExtensions* ext);
+            void multiPBO(GLExtensions* ext);
 
             typedef std::vector< osg::ref_ptr<osg::Image> >             ImageBuffer;
             typedef std::vector< GLuint > PBOBuffer;
