@@ -370,6 +370,11 @@ namespace vizkit3d
              */
             void clearEnvironmentPlugin();
 
+            /**
+             * Defines the timeout in milliseconds for updating the osg::viewer
+             */
+            void setUpdateTimeout(int msec);
+
         signals:
             void addPlugins(QObject* plugin,QObject* parent);
             void removePlugins(QObject* plugin);
