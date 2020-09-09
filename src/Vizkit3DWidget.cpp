@@ -1225,3 +1225,8 @@ void Vizkit3DWidget::setCameraManipulator(CAMERA_MANIPULATORS manipulatorType, b
     }
 }
 
+void Vizkit3DWidget::setUpdateTimeout(int msec) {
+    _timer.stop();
+    _timer.start(msec);
+}
+
