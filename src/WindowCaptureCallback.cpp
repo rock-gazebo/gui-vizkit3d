@@ -121,9 +121,15 @@ void WindowCaptureCallback::ContextData::updateTimings(osg::Timer_t tick_start,
 
 void WindowCaptureCallback::ContextData::read()
 {
-    osg::GLBufferObject::Extensions* ext = osg::GLBufferObject::getExtensions(_gc->getState()->getContextID(),true);
+#if OSG_MIN_VERSION_REQUIRED(3, 4, 0)
+    GLExtensions* ext = osg::GLExtensions::Get(_gc->getState()->getContextID(),true);
+    bool isPBOSupported = ext->isPBOSupported;
+#else
+    GLExtensions* ext = osg::GLBufferObject::getExtensions(_gc->getState()->getContextID(),true);
+    bool isPBOSupported = ext->isPBOSupported();
+#endif
 
-    if (ext->isPBOSupported() && !_pboBuffer.empty())
+    if (isPBOSupported && !_pboBuffer.empty())
     {
         if (_pboBuffer.size()==1)
         {
@@ -178,7 +184,7 @@ void WindowCaptureCallback::ContextData::readPixels()
     _currentPboIndex = nextPboIndex;
 }
 
-void WindowCaptureCallback::ContextData::singlePBO(osg::GLBufferObject::Extensions* ext)
+void WindowCaptureCallback::ContextData::singlePBO(GLExtensions* ext)
 {
     unsigned int nextImageIndex = (_currentImageIndex+1)%_imageBuffer.size();
 
@@ -253,7 +259,7 @@ void WindowCaptureCallback::ContextData::singlePBO(osg::GLBufferObject::Extensio
     _currentImageIndex = nextImageIndex;
 }
 
-void WindowCaptureCallback::ContextData::multiPBO(osg::GLBufferObject::Extensions* ext)
+void WindowCaptureCallback::ContextData::multiPBO(GLExtensions* ext)
 {
     unsigned int nextImageIndex = (_currentImageIndex+1)%_imageBuffer.size();
     unsigned int nextPboIndex = (_currentPboIndex+1)%_pboBuffer.size();
