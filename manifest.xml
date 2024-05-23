@@ -7,6 +7,7 @@
     <copyright>
 	DFKI/robotik@dfki.de
     </copyright>
+    <depend package="gui/osg_qt4" />
     <depend package="osg" />
     <depend package="qt4" />
     <depend package="qt4-opengl" />
